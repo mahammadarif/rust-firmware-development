@@ -13,10 +13,10 @@ Project Structure
 
 ## Prerequisites
 
-- **Rust toolchain with rustup installed.
-- **arm-none-eabi toolchain for generating the binary.
-- **An STM32F401-based development board (e.g., Black Pill).
-- **A programmer (e.g., ST-Link) to flash the binary to the microcontroller.
+- Rust toolchain with rustup installed.
+- arm-none-eabi toolchain for generating the binary.
+- An STM32F401-based development board (e.g., Black Pill).
+- A programmer (e.g., ST-Link) to flash the binary to the microcontroller.
 
 ---
 
@@ -49,7 +49,7 @@ sudo apt-get install gcc-arm-none-eabi
 
 ## Project Files
 
-- **Cargo.toml
+- Cargo.toml : 
 This file defines the project metadata and dependencies:
 
 ---
@@ -57,15 +57,14 @@ This file defines the project metadata and dependencies:
 Specifies the thumbv7em-none-eabihf target for STM32F401.
 Includes dependencies like embedded-hal, stm32f4xx-hal, cortex-m, and others for embedded development.
 
-- ** memory.x
+-  memory.x : 
 The linker script defines the memory layout:
 
 ---
-- **Flash memory: 256KB starting at 0x08000000.
+- Flash memory: 256KB starting at 0x08000000.
 RAM: 64KB starting at 0x20000000.
 Sets the stack start at the end of RAM.
 
-- **src/main.rs
 ## The main application:
 
 Uses the STM32F401 HAL to configure the system clock (84 MHz using a 25 MHz HSE).
@@ -75,8 +74,8 @@ Uses a timer (TIM5) for precise delays.
 
 ---
 
-- **.cargo/config.toml
-The .cargo/config.toml file is a Rust configuration file that customizes the build process for the project. It is located in the .cargo directory at the root of the project. Below is its content:
+## .cargo/config.toml
+- The .cargo/config.toml file is a Rust configuration file that customizes the build process for the project. It is located in the .cargo directory at the root of the project. Below is its content:
 
 ---
 
@@ -105,44 +104,49 @@ rustflags: Passes additional flags to the Rust compiler.
 Note: The .cargo/config.toml file is not checked into the repository by default, as it is specific to the build configuration. You need to create it manually in the .cargo directory with the above content to ensure the project builds correctly for the STM32F401 target.
 Build Instructions
 
-Create .cargo/config.toml:
-
-Create a .cargo directory in the project root:mkdir .cargo
-
-
-Create and edit the config.toml file:nano .cargo/config.toml
-
-
-Paste the content shown above and save.
-
 
 ## Build the Project:
 
-Compile the project in release mode for the ARM target:cargo build --release --target thumbv7em-none-eabihf
+Compile the project in release mode for the ARM target:
 
+```bash
+cargo build --release --target thumbv7em-none-eabihf
+```
 
 ## Generate the Binary:
 
-Convert the compiled output to a .bin file for flashing:arm-none-eabi-objcopy -O binary target/thumbv7em-none-eabihf/release/blink_led blink_led.bin
+Convert the compiled output to a .bin file for flashing:
 
+```bash
+arm-none-eabi-objcopy -O binary target/thumbv7em-none-eabihf/release/blink_led blink_led.bin
+```
 
 ## Check Binary Size:
 
-Verify the size of the compiled binary:cargo size --release --target thumbv7em-none-eabihf
+Verify the size of the compiled binary:
+
+```bash
+cargo size --release --target thumbv7em-none-eabihf
 
 Example output:   text    data     bss     dec     hex filename
   10224       0       4   10228    27f4 blink_led
-
+```
 
 ## Clean the Project:
 
-Remove build artifacts:cargo clean
+Command to clean build artifacts:
 
+```bash
+cargo clean
+```
 
 ## List Available Targets:
 
-View supported Rust targets:rustup target list
+View supported Rust targets:
 
+```bash
+rustup target list
+```
 
 
 ## Flashing the Binary
@@ -165,9 +169,6 @@ The project uses panic-halt to stop execution on errors, ensuring no undefined b
 Ensure the HSE clock source is a 25 MHz crystal for correct timing.
 The .cargo/config.toml file must be present for the build to link correctly with the memory.x script.
 
-## Troubleshooting
-
-Build Errors: Ensure the arm-none-eabi toolchain, Rust target, and .cargo/config.toml file are correctly set up.
-Flashing Issues: Verify the programmer connection and configuration.
-No Blinking: Check the LED pin (PC13) and ensure the board is powered correctly.
+### Project Photo
+![Blink LED on STM32F401](Media.jpeg)
 
