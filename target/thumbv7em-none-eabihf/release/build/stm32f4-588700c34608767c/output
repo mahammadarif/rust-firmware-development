@@ -1,0 +1,3 @@
+cargo:rustc-link-search=/media/mdarif/work/rust/Myrust/blink_led/target/thumbv7em-none-eabihf/release/build/stm32f4-588700c34608767c/out
+cargo:rerun-if-changed=src/stm32f401/device.x
+cargo:rerun-if-changed=build.rs
